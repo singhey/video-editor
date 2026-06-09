@@ -7,6 +7,7 @@ When one values changes to another show like a graph to show increase of value
 Add text transition when writing
 Add cut scene to keep viewer engaged where the animation will be on entire screen with a background color. Wich will keep the pace nice.
 Use the sfx in public directory to make the video engaging
+Use any animation library like gsap or 3js to make smooth animations where you see fit
 Don't add too much text. Only add heading to give more weightage. Prefer transition animation where elements are moving
 Add some transition from scene to another to keep continuity
 If you need any assets of sfx more. I can provide it
