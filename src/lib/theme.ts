@@ -1,43 +1,37 @@
 // Design tokens for the video
 export const COLORS = {
-  // Primary palette
-  gold: '#FFD700',
+  // Primary palette — navy text on white
   navy: '#1B2A4A',
+  white: '#FFFFFF',
+  offWhite: '#F0F0F0',
+
+  // Accent colors for animations
+  gold: '#FFD700',
   orange: '#FF6B35',
   blue: '#00B4D8',
   green: '#2ECC71',
   red: '#E74C3C',
-  dangerRed: '#FF0000',
   purple: '#9B59B6',
-  white: '#FFFFFF',
-  offWhite: '#F8F8F8',
-  
+
   // Backgrounds
   darkBg: '#0A0A0A',
-  darkOverlay: 'rgba(0, 0, 0, 0.6)',
-  darkOverlayHeavy: 'rgba(0, 0, 0, 0.85)',
-  
-  // Cutscene backgrounds
-  cutOrange: '#1A0F00',
-  cutBlue: '#001520',
-  cutRed: '#1A0000',
-  cutPurple: '#0D001A',
-  cutGold: '#1A1500',
+  darkOverlay: 'rgba(0, 0, 0, 0.5)',
+
+  // Cutscene solid backgrounds
+  cutNavy: '#1B2A4A',
+  cutDark: '#0F1A2E',
 };
 
 export const LAYOUT = {
   width: 1080,
   height: 1920,
-  // Safe area (10% buffer)
-  safeTop: 108,     // 10% of height
-  safeSide: 108,    // 10% of width
-  safeBottom: 1920 / 2, // Bottom half reserved for captions
-  // Content area (top half with safe margins)
-  contentTop: 160,  // safeTop + some padding
-  contentBottom: 860, // Halfway minus caption buffer
-  contentLeft: 108,
-  contentRight: 972, // 1080 - 108
-  contentWidth: 864, // 972 - 108
+  // 10% top buffer, 15% side buffer, bottom half for captions
+  safeTop: 192,     // 10% of 1920
+  safeSide: 162,    // 15% of 1080
+  contentBottom: 860, // top half editing zone (leaving room before caption area)
+  contentLeft: 162,
+  contentRight: 918, // 1080 - 162
+  contentWidth: 756, // 918 - 162
 };
 
 export const FONTS = {
