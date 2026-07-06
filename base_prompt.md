@@ -6,6 +6,9 @@ This is a talk head video. Where the person is talking in the bottom half and al
 ## Color guidelines
 Text color should be navy blue in color and background of white wrapping only the text.
 
+## Animation guidelines
+use motion library for all animation to make smooth transition. 
+Always be creative when animating to keep viewers. Visual hooks are more important than just text
 
 ## Editing tip
 
