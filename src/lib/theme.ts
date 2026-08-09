@@ -1,36 +1,50 @@
 // Design tokens for the video
 export const COLORS = {
-  // Primary palette — navy text on white
-  navy: '#1B2A4A',
+  // Primary palette — navy text on white (per brand guidelines)
+  navy: '#14264A',
+  navySoft: '#28407A',
   white: '#FFFFFF',
-  offWhite: '#F0F0F0',
+  offWhite: '#F4F6FB',
 
-  // Accent colors for animations
-  gold: '#FFD700',
+  // Accent colors for animations / icons / highlights
+  gold: '#FFC23C',
   orange: '#FF6B35',
-  blue: '#00B4D8',
-  green: '#2ECC71',
-  red: '#E74C3C',
-  purple: '#9B59B6',
-
-  // Backgrounds
-  darkBg: '#0A0A0A',
-  darkOverlay: 'rgba(0, 0, 0, 0.5)',
+  blue: '#2DA8E8',
+  cyan: '#22D3EE',
+  green: '#22C55E',
+  red: '#EF4444',
+  purple: '#8B5CF6',
 
   // Cutscene solid backgrounds
-  cutNavy: '#1B2A4A',
-  cutDark: '#0F1A2E',
+  cutNavy: '#0E1B33',
+  cutDeep: '#0A1428',
+  cutGlow: '#1B2E57',
 };
 
+// The video is 1080x1920 (vertical short). The person's head sits roughly from
+// the vertical middle downward, so the clean editing band is ABOVE the head:
+// 20% top safety buffer + 15% side safety buffer, bottom half reserved for
+// user-added captions. Cut scenes are the exception — they cover full screen.
 export const LAYOUT = {
   width: 1080,
   height: 1920,
-  // 10% top buffer, 15% side buffer, bottom half for captions
-  safeTop: 192,     // 10% of 1920
-  safeSide: 162,    // 15% of 1080
-  contentBottom: 860, // top half editing zone (leaving room before caption area)
+  fps: 30,
+
+  safeTopPct: 0.2, // 20% top buffer
+  safeSidePct: 0.15, // 15% side buffer
+
+  safeTop: 384, // 20% of 1920
+  safeSide: 162, // 15% of 1080
+
+  // Overlay band — the clear area above the talking head.
+  bandTop: 402,
+  bandBottom: 660,
+  get bandHeight() {
+    return this.bandBottom - this.bandTop;
+  },
+
   contentLeft: 162,
-  contentRight: 918, // 1080 - 162
+  contentRight: 918,
   contentWidth: 756, // 918 - 162
 };
 
