@@ -1,5 +1,5 @@
 ## Edting Instructions
-I've my captions and video in public directory. Understand the captions and edit my video in a professional way. Use the remotion skill to understand and build it.
+I've my and video in public directory. Use elevenlabs to transcribe it and generate srt. The langyage is hindi. Then using claude transalte it to english and place in public directory. Understand the captions and edit my video in a professional way. Use the remotion skill to understand and build it.
 I want the scene to change every 4seconds and let the video play in background and you can add elements on top of it. This is a talking head style video. I want a professional edited video. Bottom half of video is for caption I'll add later. Keep buffer of 20% on top and 15% on side for screen safety. This is a youtube short video so it should be engaging.
 This is a talk head video. Where the person is talking in the bottom half and all editing should happen in top half except the cut scenes
 Project has Elevenlabs api key, use it to add effects and improve my audio as you see fit.
