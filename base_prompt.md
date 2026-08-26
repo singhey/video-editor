@@ -4,12 +4,22 @@ I want the scene to change every 4seconds and let the video play in full backgro
 This is a talk head video. Where the person is talking in the bottom half and all editing should happen in top half. The edits should blend seamlessly with the video. except the cut scenes
 Project has Elevenlabs api key, use it to add effects and improve my audio as you see fit.
 
+## Don't
+
+Don't try to optimize my audio. Keep it as it, it's blending perfectly with the video
+
 ## Color guidelines
 Text color should be navy blue in color and background of white wrapping only the text.
 
 ## Animation guidelines
 use motion library for all animation to make smooth transition. 
 Always be creative when animating to keep viewers. Visual hooks are more important than just text
+
+
+## Available resources
+
+1. Browser mcp if you wish to research and gather screenshot
+2. Elvenlabs for Audio effects generation.
 
 ## Editing tip
 
