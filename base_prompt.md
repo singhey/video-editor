@@ -34,3 +34,12 @@ Always be creative when animating to keep viewers. Visual hooks are more importa
 9. In cut scenes add animated background with abstract animations subtle and keep text in centre
 10. If any source quotation is needed, then use the browser to gather screenshot and use in the video. To give it more effect
 11. I don't want blurred area on the sides. If there's not enough headspace, then move the video a little down and blur on the top and make the video.
+
+
+
+## Thumbnail generation
+
+1. Once, the video is rendered generate thumbnail using my image, runware mcp is present, so, use my image and generate thumnail, with maximum 10 words and it should be impactful, 
+2. Don't clutter with too much design. It should be just me and the text on top conveying the message. My theme is orange shade. So, for highlights you can use that in thumbnail only
+3. Use Gpt 1.5 model for generation, if there's any messing up of text regenerate it. For font you can use monserrat or sans
+4. If you think, you can generate the thumbnail programmatically you can use that too instead of mcp
