@@ -18,7 +18,7 @@ Always be creative when animating to keep viewers. Visual hooks are more importa
 
 ## Available resources
 
-1. Browser mcp if you wish to research and gather screenshot
+1. Claude extension is present in browser, you can use it
 2. Elvenlabs for Audio effects generation.
 
 ## Editing tip
@@ -32,3 +32,5 @@ Always be creative when animating to keep viewers. Visual hooks are more importa
 7. Add some transition from scene to another to keep continuity
 8. If you need any assets of sfx more. I can provide it
 9. In cut scenes add animated background with abstract animations subtle and keep text in centre
+10. If any source quotation is needed, then use the browser to gather screenshot and use in the video. To give it more effect
+11. I don't want blurred area on the sides. If there's not enough headspace, then move the video a little down and blur on the top and make the video.
