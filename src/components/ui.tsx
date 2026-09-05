@@ -1,19 +1,20 @@
 import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import { COLORS, LAYOUT } from '../lib/theme';
-import { montserrat, inter } from '../lib/fonts';
-import { useCountUp, formatInt } from '../lib/anim';
+import { montserrat, mono } from '../lib/fonts';
+import { useRamp } from '../lib/motion-anim';
 
 /**
- * Positions overlay content inside the clean band ABOVE the talking head,
- * respecting the 20% top / 15% side safety margins. Everything here lives in
- * the top area so the person (bottom half) and the caption zone stay clear.
+ * Positions overlay content inside the clear band above the speaker's head,
+ * respecting the 20% top / 15% side safety margins. Everything an overlay draws
+ * lives here so the face and the (later-added) caption zone stay untouched.
  */
-export const SafeBand: React.FC<{
+export const Band: React.FC<{
   children: React.ReactNode;
   justify?: React.CSSProperties['justifyContent'];
-  align?: React.CSSProperties['alignItems'];
-}> = ({ children, justify = 'center', align = 'center' }) => (
+  gap?: number;
+  style?: React.CSSProperties;
+}> = ({ children, justify = 'center', gap = 16, style }) => (
   <AbsoluteFill>
     <div
       style={{
@@ -25,9 +26,9 @@ export const SafeBand: React.FC<{
         display: 'flex',
         flexDirection: 'column',
         justifyContent: justify,
-        alignItems: align,
-        gap: 18,
-        textAlign: 'center',
+        alignItems: 'center',
+        gap,
+        ...style,
       }}
     >
       {children}
@@ -35,68 +36,31 @@ export const SafeBand: React.FC<{
   </AbsoluteFill>
 );
 
-/** White rounded box that wraps its content tightly, with navy text. */
-export const Card: React.FC<{
+/** White plate that wraps only its text, navy ink. The house style. */
+export const Plate: React.FC<{
   children: React.ReactNode;
-  style?: React.CSSProperties;
+  size?: number;
+  pad?: string;
   accent?: string;
-}> = ({ children, style, accent }) => (
+  style?: React.CSSProperties;
+}> = ({ children, size = 56, pad = '10px 24px', accent, style }) => (
   <div
     style={{
       display: 'inline-flex',
       alignItems: 'center',
-      gap: 16,
+      gap: 14,
       background: COLORS.white,
       color: COLORS.navy,
-      borderRadius: 22,
-      padding: '20px 30px',
-      boxShadow: '0 18px 50px rgba(6, 14, 33, 0.35)',
-      borderBottom: accent ? `6px solid ${accent}` : undefined,
-      ...style,
-    }}
-  >
-    {children}
-  </div>
-);
-
-/** Small eyebrow / kicker chip. */
-export const Kicker: React.FC<{ children: React.ReactNode; color?: string }> = ({
-  children,
-  color = COLORS.orange,
-}) => (
-  <div
-    style={{
-      display: 'inline-block',
-      background: color,
-      color: COLORS.white,
-      fontFamily: montserrat,
-      fontWeight: 800,
-      fontSize: 30,
-      letterSpacing: 2,
-      textTransform: 'uppercase',
-      padding: '8px 20px',
-      borderRadius: 12,
-      boxShadow: '0 10px 26px rgba(6,14,33,0.28)',
-    }}
-  >
-    {children}
-  </div>
-);
-
-/** Large navy heading inside a white card. */
-export const Heading: React.FC<{
-  children: React.ReactNode;
-  size?: number;
-  style?: React.CSSProperties;
-}> = ({ children, size = 66, style }) => (
-  <div
-    style={{
       fontFamily: montserrat,
       fontWeight: 900,
       fontSize: size,
-      lineHeight: 1.02,
-      color: COLORS.navy,
-      letterSpacing: -1,
+      lineHeight: 1.06,
+      letterSpacing: -1.6,
+      padding: pad,
+      borderRadius: 14,
+      whiteSpace: 'nowrap',
+      boxShadow: '0 18px 46px rgba(6,14,33,0.46)',
+      borderBottom: accent ? `7px solid ${accent}` : undefined,
       ...style,
     }}
   >
@@ -104,24 +68,90 @@ export const Heading: React.FC<{
   </div>
 );
 
-/** Monospace-ish code chip: white card wrapping code text with a token colored. */
-export const CodeChip: React.FC<{
+/** Small uppercase kicker — navy on white, accent kept as a dot + underline. */
+export const Kicker: React.FC<{
+  children: React.ReactNode;
+  color?: string;
+  size?: number;
+  style?: React.CSSProperties;
+}> = ({ children, color = COLORS.red, size = 25, style }) => (
+  <div
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 10,
+      background: COLORS.white,
+      color: COLORS.navy,
+      fontFamily: mono,
+      fontWeight: 800,
+      fontSize: size,
+      letterSpacing: 3,
+      textTransform: 'uppercase',
+      padding: '7px 16px',
+      borderRadius: 8,
+      borderBottom: `5px solid ${color}`,
+      whiteSpace: 'nowrap',
+      boxShadow: '0 10px 28px rgba(6,14,33,0.34)',
+      ...style,
+    }}
+  >
+    <span style={{ width: 12, height: 12, borderRadius: 3, background: color }} />
+    {children}
+  </div>
+);
+
+/** Monospace number on a white plate. */
+export const NumPlate: React.FC<{
+  children: React.ReactNode;
+  size?: number;
+  color?: string;
+  style?: React.CSSProperties;
+}> = ({ children, size = 90, color = COLORS.navy, style }) => (
+  <div
+    style={{
+      background: COLORS.white,
+      color,
+      fontFamily: mono,
+      fontWeight: 800,
+      fontSize: size,
+      fontVariantNumeric: 'tabular-nums',
+      letterSpacing: -2,
+      padding: '6px 20px',
+      borderRadius: 12,
+      boxShadow: '0 18px 46px rgba(6,14,33,0.46)',
+      whiteSpace: 'nowrap',
+      lineHeight: 1.1,
+      ...style,
+    }}
+  >
+    {children}
+  </div>
+);
+
+/** Number that ramps from `from` to `to` on a motion easing curve. */
+export const Counter: React.FC<{
+  to: number;
+  from?: number;
+  start?: number;
+  duration?: number;
+  format?: (n: number) => string;
+}> = ({ to, from = 0, start = 4, duration = 32, format = (n) => String(Math.round(n)) }) => (
+  <>{format(useRamp(to, { start, duration, from }))}</>
+);
+
+/** Translucent navy card — used to group a graphic under a headline. */
+export const Card: React.FC<{
   children: React.ReactNode;
   style?: React.CSSProperties;
 }> = ({ children, style }) => (
   <div
     style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      background: COLORS.white,
-      color: COLORS.navy,
-      fontFamily: `'SF Mono', ui-monospace, Menlo, Consolas, monospace`,
-      fontWeight: 700,
-      fontSize: 34,
-      padding: '16px 24px',
-      borderRadius: 16,
-      boxShadow: '0 16px 44px rgba(6,14,33,0.32)',
-      whiteSpace: 'nowrap',
+      background: 'rgba(10,20,40,0.52)',
+      border: '1px solid rgba(255,255,255,0.16)',
+      backdropFilter: 'blur(14px)',
+      borderRadius: 20,
+      padding: 18,
+      boxShadow: '0 22px 54px rgba(6,14,33,0.4)',
       ...style,
     }}
   >
@@ -129,53 +159,23 @@ export const CodeChip: React.FC<{
   </div>
 );
 
-/** Animated number that counts up from 0 (or `from`) to `value`. */
-export const AnimatedNumber: React.FC<{
-  value: number;
-  start?: number;
-  duration?: number;
-  from?: number;
-  format?: (n: number) => string;
+export const Label: React.FC<{
+  children: React.ReactNode;
+  size?: number;
+  color?: string;
   style?: React.CSSProperties;
-}> = ({ value, start = 6, duration = 34, from = 0, format = formatInt, style }) => {
-  const n = useCountUp(value, { start, duration, from });
-  return (
-    <span
-      style={{
-        fontFamily: montserrat,
-        fontWeight: 900,
-        fontVariantNumeric: 'tabular-nums',
-        color: COLORS.navy,
-        ...style,
-      }}
-    >
-      {format(n)}
-    </span>
-  );
-};
-
-/** Colored emoji/icon disc. */
-export const IconDisc: React.FC<{ children: React.ReactNode; bg?: string; size?: number }> = ({
-  children,
-  bg = COLORS.navy,
-  size = 64,
-}) => (
+}> = ({ children, size = 22, color = 'rgba(255,255,255,0.82)', style }) => (
   <div
     style={{
-      width: size,
-      height: size,
-      borderRadius: '50%',
-      background: bg,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: size * 0.52,
-      flexShrink: 0,
+      fontFamily: mono,
+      fontWeight: 800,
+      fontSize: size,
+      letterSpacing: 2.4,
+      textTransform: 'uppercase',
+      color,
+      ...style,
     }}
   >
     {children}
   </div>
 );
-
-export const bodyFont = inter;
-export const headFont = montserrat;
