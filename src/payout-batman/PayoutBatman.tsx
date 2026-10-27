@@ -47,12 +47,12 @@ type Shot = {
 };
 
 const SHOTS: Shot[] = [
-  { id: 'S1', label: 'phone glow', from: 0, to: 1.5, file: 's1_phone.mp4', light: 'phone', ready: false },
-  { id: 'S2', label: 'apron tie', from: 1.5, to: 4.5, file: 's2_apron.mp4', light: 'red', ready: false },
-  { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'red', ready: false },
-  { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'red', ready: false },
-  { id: 'S5', label: 'walk through smoke', from: 11.5, to: 14.2, file: 's5_walk.mp4', light: 'strobe', ready: false },
-  { id: 'S6', label: 'loop: back at counter', from: 19.5, to: 20.7, file: 's6_loop.mp4', light: 'normal', ready: false },
+  { id: 'S1', label: 'phone glow', from: 0, to: 1.5, file: 's1_phone.mp4', light: 'phone', ready: true, skip: 3 },
+  { id: 'S2', label: 'apron tie', from: 1.5, to: 4.5, file: 's2_apron.mp4', light: 'red', ready: true, skip: 1 },
+  { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'red', ready: true, skip: 2 },
+  { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'red', ready: true, skip: 2.5 },
+  { id: 'S5', label: 'walk through smoke', from: 11.5, to: 14.2, file: 's5_walk.mp4', light: 'strobe', ready: true, skip: 1.5 },
+  { id: 'S6', label: 'loop: back at counter', from: 19.5, to: 20.7, file: 's6_loop.mp4', light: 'normal', ready: true, skip: 0.5 },
 ];
 
 const FIGHT = { from: 14.2, to: 19.5, src: `${DIR}/reference/fight_14.2-20.7.mp4` };
