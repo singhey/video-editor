@@ -53,10 +53,13 @@ const SHOTS: Shot[] = [
   { id: 'S2', label: 'apron tie', from: 1.5, to: 4.5, file: 's2_apron.mp4', light: 'red', ready: true, skip: 1 },
   { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'redFast', ready: true, skip: 2 },
   { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'redFast', ready: true, skip: 2.5 },
-  { id: 'S5', label: 'walk through smoke', from: 11.5, to: 14.2, file: 's5_walk.mp4', light: 'strobe', ready: true, skip: 1.5 },
+  { id: 'S5', label: 'walk through smoke', from: 11, to: 12.33, file: 's5_walk.mp4', light: 'strobe', ready: true, skip: 2.5 },
   { id: 'S6', label: 'loop: back at counter', from: 20.5, to: 23.07, file: 's6_loop.mp4', light: 'normal', ready: true, skip: 0.5 },
 ];
 
+// Batman's red-lit entrance from the reference picks up where our walk ends,
+// so the handover into the fight happens inside the same red light.
+const ENTRY = { from: 12.33, to: 14.2, src: `${DIR}/reference/entry_12.33-14.2.mp4` };
 const FIGHT = { from: 14.2, to: 20.5, src: `${DIR}/reference/fight_14.2-20.7.mp4` };
 
 /**
@@ -85,7 +88,7 @@ type Pulse = {
 const RED: Pulse = { from: 1.5, to: 4.5, every: 2, hold: 1, floor: 0.07 };
 const RED_FAST: Pulse = { from: 4.5, to: 10, every: 1, hold: 0.5, floor: 0.07 };
 // He walks in under red light like the reference: the strobe dips, never goes black.
-const STROBE: Pulse = { from: 11.5, to: 14.2, every: 0.5, hold: 0.5, floor: 0.45 };
+const STROBE: Pulse = { from: 11, to: 12.33, every: 0.5, hold: 0.5, floor: 0.45 };
 const RELEASE_FRAMES = 3; // a bulb doesn't snap off, it decays
 
 const triggers = (p: Pulse) => {
@@ -103,7 +106,7 @@ const TAGS = [
   { label: 'COMMISSION', at: 15.63, until: 16.72, x: 0.27, y: 0.5, rot: -9 },
   { label: 'PLATFORM FEE', at: 16.72, until: 17.81, x: 0.46, y: 0.58, rot: 8 },
   { label: 'UNWANTED ADS', at: 17.81, until: 18.92, x: 0.38, y: 0.42, rot: -6 },
-  { label: 'POC', at: 18.92, until: 20.5, x: 0.7, y: 0.5, rot: -12, size: 56 },
+  { label: 'ZOMATO MANAGER', at: 18.92, until: 20.5, x: 0.6, y: 0.5, rot: -10, size: 48 },
 ];
 
 /** Brightness of a light that hits on each trigger, holds, then decays. */
@@ -251,6 +254,10 @@ export const PayoutBatman: React.FC<{ beatGuide: boolean }> = ({ beatGuide }) =>
             <ShotLayer shot={shot} />
           </Sequence>
         ))}
+
+        <Sequence from={s(ENTRY.from)} durationInFrames={s(ENTRY.to) - s(ENTRY.from)}>
+          <Video src={staticFile(ENTRY.src)} muted objectFit="cover" style={{ width: '100%', height: '100%' }} />
+        </Sequence>
 
         <Sequence from={s(FIGHT.from)} durationInFrames={s(FIGHT.to) - s(FIGHT.from)}>
           <Video src={staticFile(FIGHT.src)} muted objectFit="cover" style={{ width: '100%', height: '100%' }} />
