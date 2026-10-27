@@ -25,7 +25,7 @@ const W = 1080;
 const PICTURE_H = 608; // 16:9 at full width
 const PICTURE_TOP = 600;
 
-const CAPTION = 'me going to swiggy & zomato after opening my weekly payout';
+const CAPTION = 'restaurant owners as soon as they see their weekly swiggy & zomato payout';
 
 // Dishrupt receipt tokens: paper tags, red only because these are money taken.
 const PAPER = '#F4F1EA';
