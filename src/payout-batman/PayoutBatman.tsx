@@ -31,7 +31,7 @@ const STAMP_RED = '#C62019';
 
 const DIR = 'payout-batman';
 
-type Light = 'phone' | 'red' | 'strobe' | 'normal' | 'none';
+type Light = 'phone' | 'red' | 'redFast' | 'strobe' | 'normal' | 'none';
 
 type Shot = {
   id: string;
@@ -49,8 +49,8 @@ type Shot = {
 const SHOTS: Shot[] = [
   { id: 'S1', label: 'phone glow', from: 0, to: 1.5, file: 's1_phone.mp4', light: 'phone', ready: true, skip: 3 },
   { id: 'S2', label: 'apron tie', from: 1.5, to: 4.5, file: 's2_apron.mp4', light: 'red', ready: true, skip: 1 },
-  { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'red', ready: true, skip: 2 },
-  { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'red', ready: true, skip: 2.5 },
+  { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'redFast', ready: true, skip: 2 },
+  { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'redFast', ready: true, skip: 2.5 },
   { id: 'S5', label: 'walk through smoke', from: 11.5, to: 14.2, file: 's5_walk.mp4', light: 'strobe', ready: true, skip: 1.5 },
   { id: 'S6', label: 'loop: back at counter', from: 19.5, to: 20.7, file: 's6_loop.mp4', light: 'normal', ready: true, skip: 0.5 },
 ];
@@ -63,6 +63,8 @@ const FIGHT = { from: 14.2, to: 19.5, src: `${DIR}/reference/fight_14.2-20.7.mp4
  * Instagram.
  */
 const RED = { offset: 1.5, period: 1.0, peak: 1, floor: 0.07 };
+// Twice as fast once the karchi is in his hand.
+const RED_FAST = { offset: 4.5, period: 0.5, peak: 1, floor: 0.07 };
 const STROBE = { offset: 11.5, period: 0.25, peak: 1, floor: 0.05 };
 const RELEASE_FRAMES = 3; // a bulb doesn't snap off, it decays
 
@@ -90,6 +92,7 @@ const flicker = (frame: number, grid: typeof RED) => {
 
 const lightLevel = (light: Light, frame: number) => {
   if (light === 'red') return flicker(frame, RED);
+  if (light === 'redFast') return flicker(frame, RED_FAST);
   if (light === 'strobe') return flicker(frame, STROBE);
   return 1;
 };
@@ -99,6 +102,7 @@ const Placeholder: React.FC<{ shot: Shot }> = ({ shot }) => {
   const backgrounds: Record<Light, string> = {
     phone: 'radial-gradient(circle at 50% 55%, #3a4a66 0%, #0b0d12 45%, #000 70%)',
     red: 'radial-gradient(circle at 30% 50%, #a3150f 0%, #3d0705 45%, #050101 80%)',
+    redFast: 'radial-gradient(circle at 30% 50%, #a3150f 0%, #3d0705 45%, #050101 80%)',
     strobe: 'radial-gradient(circle at 50% 60%, #8f120d 0%, #2b0503 50%, #030101 85%)',
     normal: 'radial-gradient(circle at 50% 50%, #8a6a45 0%, #3a2a1a 60%, #120c07 100%)',
     none: '#000',
