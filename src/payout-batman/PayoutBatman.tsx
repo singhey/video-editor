@@ -23,7 +23,7 @@ const W = 1080;
 const PICTURE_H = 608; // 16:9 at full width
 const PICTURE_TOP = 600;
 
-const CAPTION = 'me going to zomato after opening my weekly payout';
+const CAPTION = 'me going to swiggy & zomato after opening my weekly payout';
 
 // Dishrupt receipt tokens: paper tags, red only because these are money taken.
 const PAPER = '#F4F1EA';
@@ -94,10 +94,13 @@ const triggers = (p: Pulse) => {
 
 // Deduction tags pinned to the goons in the fight clip (seconds are global,
 // x/y are fractions of the picture). Names must match the real payout.
+// Each tag stamps in on a beat and holds until the next one lands; the last
+// one is the boss.
 const TAGS = [
-  { label: 'PLATFORM FEE', at: 15.7, until: 16.5, x: 0.27, y: 0.5, rot: -9 },
-  { label: 'ADS', at: 16.7, until: 17.4, x: 0.46, y: 0.58, rot: 8 },
-  { label: 'COMMISSION', at: 18.8, until: 19.5, x: 0.7, y: 0.5, rot: -12 },
+  { label: 'COMMISSION', at: 15.63, until: 16.72, x: 0.27, y: 0.5, rot: -9 },
+  { label: 'PLATFORM FEE', at: 16.72, until: 17.81, x: 0.46, y: 0.58, rot: 8 },
+  { label: 'UNWANTED ADS', at: 17.81, until: 18.92, x: 0.38, y: 0.42, rot: -6 },
+  { label: 'POC', at: 18.92, until: 19.5, x: 0.7, y: 0.5, rot: -12, size: 56 },
 ];
 
 /** Brightness of a light that hits on each trigger, holds, then decays. */
@@ -164,7 +167,13 @@ const ShotLayer: React.FC<{ shot: Shot }> = ({ shot }) => {
 };
 
 /** Paper deduction tag that lands like a stamp: 130% → 100% in 4 frames + micro shake. */
-const Tag: React.FC<{ label: string; x: number; y: number; rot: number }> = ({ label, x, y, rot }) => {
+const Tag: React.FC<{ label: string; x: number; y: number; rot: number; size?: number }> = ({
+  label,
+  x,
+  y,
+  rot,
+  size = 34,
+}) => {
   const frame = useCurrentFrame();
   const scale = interpolate(frame, [0, 4], [1.3, 1], { extrapolateRight: 'clamp' });
   const shake = frame >= 4 && frame < 6 ? (frame === 4 ? 4 : -4) : 0;
@@ -179,7 +188,7 @@ const Tag: React.FC<{ label: string; x: number; y: number; rot: number }> = ({ l
         color: STAMP_RED,
         fontFamily: mono,
         fontWeight: 800,
-        fontSize: 34,
+        fontSize: size,
         letterSpacing: 1,
         padding: '8px 16px',
         border: `4px solid ${STAMP_RED}`,
@@ -246,7 +255,7 @@ export const PayoutBatman: React.FC<{ beatGuide: boolean }> = ({ beatGuide }) =>
 
         {TAGS.map((tag) => (
           <Sequence key={tag.label} from={s(tag.at)} durationInFrames={s(tag.until) - s(tag.at)}>
-            <Tag label={tag.label} x={tag.x} y={tag.y} rot={tag.rot} />
+            <Tag label={tag.label} x={tag.x} y={tag.y} rot={tag.rot} size={tag.size} />
           </Sequence>
         ))}
 
