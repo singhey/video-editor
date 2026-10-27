@@ -17,7 +17,9 @@ const inter = loadInter('normal', { weights: ['500'], subsets: ['latin'] }).font
 
 export const FPS = 30;
 const s = (sec: number) => Math.round(sec * FPS);
-export const DURATION = s(20.7);
+// Ends on a bar line six bars after the drop (14.16s + 6 × 4 beats at 161.5 BPM),
+// so the Instagram song cuts on the music, not mid-phrase.
+export const DURATION = s(23.07);
 
 const W = 1080;
 const PICTURE_H = 608; // 16:9 at full width
@@ -52,10 +54,10 @@ const SHOTS: Shot[] = [
   { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'redFast', ready: true, skip: 2 },
   { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'redFast', ready: true, skip: 2.5 },
   { id: 'S5', label: 'walk through smoke', from: 11.5, to: 14.2, file: 's5_walk.mp4', light: 'strobe', ready: true, skip: 1.5 },
-  { id: 'S6', label: 'loop: back at counter', from: 19.5, to: 20.7, file: 's6_loop.mp4', light: 'normal', ready: true, skip: 0.5 },
+  { id: 'S6', label: 'loop: back at counter', from: 20.5, to: 23.07, file: 's6_loop.mp4', light: 'normal', ready: true, skip: 0.5 },
 ];
 
-const FIGHT = { from: 14.2, to: 19.5, src: `${DIR}/reference/fight_14.2-20.7.mp4` };
+const FIGHT = { from: 14.2, to: 20.5, src: `${DIR}/reference/fight_14.2-20.7.mp4` };
 
 /**
  * Beats of the reference track (161.5 BPM), detected with librosa onset
@@ -82,7 +84,8 @@ type Pulse = {
 // The light hits on the beat and gets faster as he arms himself.
 const RED: Pulse = { from: 1.5, to: 4.5, every: 2, hold: 1, floor: 0.07 };
 const RED_FAST: Pulse = { from: 4.5, to: 10, every: 1, hold: 0.5, floor: 0.07 };
-const STROBE: Pulse = { from: 11.5, to: 14.2, every: 0.5, hold: 0.25, floor: 0.05 };
+// He walks in under red light like the reference: the strobe dips, never goes black.
+const STROBE: Pulse = { from: 11.5, to: 14.2, every: 0.5, hold: 0.5, floor: 0.45 };
 const RELEASE_FRAMES = 3; // a bulb doesn't snap off, it decays
 
 const triggers = (p: Pulse) => {
@@ -100,7 +103,7 @@ const TAGS = [
   { label: 'COMMISSION', at: 15.63, until: 16.72, x: 0.27, y: 0.5, rot: -9 },
   { label: 'PLATFORM FEE', at: 16.72, until: 17.81, x: 0.46, y: 0.58, rot: 8 },
   { label: 'UNWANTED ADS', at: 17.81, until: 18.92, x: 0.38, y: 0.42, rot: -6 },
-  { label: 'POC', at: 18.92, until: 19.5, x: 0.7, y: 0.5, rot: -12, size: 56 },
+  { label: 'POC', at: 18.92, until: 20.5, x: 0.7, y: 0.5, rot: -12, size: 56 },
 ];
 
 /** Brightness of a light that hits on each trigger, holds, then decays. */
