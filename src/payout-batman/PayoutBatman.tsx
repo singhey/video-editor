@@ -58,15 +58,39 @@ const SHOTS: Shot[] = [
 const FIGHT = { from: 14.2, to: 19.5, src: `${DIR}/reference/fight_14.2-20.7.mp4` };
 
 /**
- * Beat grid for the red flicker. These match the reference track (light on for
- * one beat, off for one); retune OFFSET and PERIOD to the song picked in
- * Instagram.
+ * Beats of the reference track (161.5 BPM), detected with librosa onset
+ * tracking. Re-run the analysis on the Instagram song if it changes.
  */
-const RED = { offset: 1.5, period: 1.0, peak: 1, floor: 0.07 };
-// Twice as fast once the karchi is in his hand.
-const RED_FAST = { offset: 4.5, period: 0.5, peak: 1, floor: 0.07 };
-const STROBE = { offset: 11.5, period: 0.25, peak: 1, floor: 0.05 };
+const BEATS = [
+  0.6, 0.98, 1.35, 1.72, 2.07, 2.44, 2.81, 3.18, 3.55, 3.92, 4.27, 4.64, 4.99, 5.36, 5.74, 6.11,
+  6.48, 6.85, 7.2, 7.57, 7.94, 8.31, 8.66, 9.03, 9.43, 9.8, 10.17, 10.52, 10.87, 11.24, 11.59,
+  11.96, 12.33, 12.7, 13.05, 13.42, 13.79, 14.16, 14.51, 14.88, 15.26, 15.63, 16.0, 16.37, 16.72,
+  17.09, 17.44, 17.81, 18.18, 18.55, 18.92, 19.3, 19.64, 20.02, 20.39,
+];
+const BEAT = 60 / 161.5;
+
+type Pulse = {
+  from: number;
+  to: number;
+  /** 2 = every other beat, 1 = every beat, 0.5 = beats and half-beats. */
+  every: 2 | 1 | 0.5;
+  /** How long the light stays on after each hit, as a fraction of a beat. */
+  hold: number;
+  floor: number;
+};
+
+// The light hits on the beat and gets faster as he arms himself.
+const RED: Pulse = { from: 1.5, to: 4.5, every: 2, hold: 1, floor: 0.07 };
+const RED_FAST: Pulse = { from: 4.5, to: 10, every: 1, hold: 0.5, floor: 0.07 };
+const STROBE: Pulse = { from: 11.5, to: 14.2, every: 0.5, hold: 0.25, floor: 0.05 };
 const RELEASE_FRAMES = 3; // a bulb doesn't snap off, it decays
+
+const triggers = (p: Pulse) => {
+  const inWindow = BEATS.filter((b) => b >= p.from && b < p.to);
+  if (p.every === 2) return inWindow.filter((_, i) => i % 2 === 0);
+  if (p.every === 1) return inWindow;
+  return inWindow.flatMap((b) => [b, b + BEAT / 2]).filter((b) => b < p.to);
+};
 
 // Deduction tags pinned to the goons in the fight clip (seconds are global,
 // x/y are fractions of the picture). Names must match the real payout.
@@ -76,16 +100,17 @@ const TAGS = [
   { label: 'COMMISSION', at: 18.8, until: 19.5, x: 0.7, y: 0.5, rot: -12 },
 ];
 
-/** Brightness of a flickering light at a given frame. */
-const flicker = (frame: number, grid: typeof RED) => {
-  const t = frame / FPS - grid.offset;
-  if (t < 0) return grid.peak;
-  const beat = Math.floor(t / grid.period);
-  // Each "on" beat lands at a slightly different strength, like a real bulb.
-  const peak = grid.peak * (0.85 + 0.15 * random(`beat-${grid.offset}-${beat}`));
-  if (beat % 2 === 0) return peak;
-  const sinceOff = Math.round((t - beat * grid.period) * FPS);
-  return interpolate(sinceOff, [0, RELEASE_FRAMES], [peak, grid.floor], {
+/** Brightness of a light that hits on each trigger, holds, then decays. */
+const flicker = (frame: number, pulse: Pulse) => {
+  const t = frame / FPS;
+  const hits = triggers(pulse);
+  const last = hits.filter((h) => h <= t).pop();
+  if (last === undefined) return pulse.floor;
+  // Each hit lands at a slightly different strength, like a real bulb.
+  const peak = 0.85 + 0.15 * random(`hit-${last}`);
+  const sinceOff = Math.round((t - last - pulse.hold * BEAT) * FPS);
+  if (sinceOff < 0) return peak;
+  return interpolate(sinceOff, [0, RELEASE_FRAMES], [peak, pulse.floor], {
     extrapolateRight: 'clamp',
   });
 };
