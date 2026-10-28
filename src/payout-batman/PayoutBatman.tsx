@@ -53,7 +53,7 @@ const SHOTS: Shot[] = [
   { id: 'S2', label: 'apron tie', from: 1.5, to: 4.5, file: 's2_apron.mp4', light: 'red', ready: true, skip: 1 },
   { id: 'S3', label: 'sleeves + karchi', from: 4.5, to: 7.5, file: 's3_karchi.mp4', light: 'redFast', ready: true, skip: 2 },
   { id: 'S4', label: 'cape silhouette', from: 7.5, to: 10, file: 's4_cape.mp4', light: 'redFast', ready: true, skip: 2.5 },
-  { id: 'S5', label: 'walk through smoke', from: 11, to: 12.33, file: 's5_walk.mp4', light: 'strobe', ready: true, skip: 2.5 },
+  { id: 'S5', label: 'walk off to the right', from: 11, to: 12.33, file: 's5_walk_exit.mp4', light: 'strobe', ready: true, skip: 2 },
   { id: 'S6', label: 'loop: back at counter', from: 20.5, to: 23.07, file: 's6_loop.mp4', light: 'normal', ready: true, skip: 0.5 },
 ];
 
